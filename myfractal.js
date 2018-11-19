@@ -84,7 +84,8 @@ var vertices = [ ];
 var normals = [ ];
 
 // Main
-function runWebGL() {
+function runWebGL() 
+{
 	canvas = document.getElementById("my-canvas");
 	initWebGL( canvas );
 	shaderProgram = initShaders( gl );
@@ -94,8 +95,8 @@ function runWebGL() {
 }
 
 // Handling the Vertex Coordinates and the Vertex Normal Vectors
-function initBuffers() {	
-
+function initBuffers() 
+{	
 	computeFractal()
 
 	triangleVertexPositionBuffer = gl.createBuffer();
@@ -105,13 +106,11 @@ function initBuffers() {
 	triangleVertexPositionBuffer.numItems = vertices.length / 3;			
 
 	// Associating to the vertex shader
-	
 	gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 
 			triangleVertexPositionBuffer.itemSize, 
 			gl.FLOAT, false, 0, 0);
 	
 	// Vertex Normal Vectors
-		
 	triangleVertexNormalBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexNormalBuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
@@ -119,7 +118,6 @@ function initBuffers() {
 	triangleVertexNormalBuffer.numItems = normals.length / 3;			
 
 	// Associating to the vertex shader
-	
 	gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, 
 			triangleVertexNormalBuffer.itemSize, 
 			gl.FLOAT, false, 0, 0);	
@@ -130,7 +128,8 @@ function drawModel( angleXX, angleYY, angleZZ,
 	sx, sy, sz,
 	tx, ty, tz,
 	mvMatrix,
-	primitiveType ) {
+	primitiveType ) 
+{
 
 	// The the global model transformation is an input
 	// Concatenate with the particular model transformations
@@ -174,24 +173,27 @@ function drawModel( angleXX, angleYY, angleZZ,
 
 	// Drawing 
 	// primitiveType allows drawing as filled triangles / wireframe / vertices
-	if( primitiveType == gl.LINE_LOOP ) {
+	if( primitiveType == gl.LINE_LOOP ) 
+	{
 		// To simulate wireframe drawing!
 		// No faces are defined! There are no hidden lines!
 		// Taking the vertices 3 by 3 and drawing a LINE_LOOP
 		var i;
-		for( i = 0; i < triangleVertexPositionBuffer.numItems / 3; i++ ) {
+		for( i = 0; i < triangleVertexPositionBuffer.numItems / 3; i++ ) 
+		{
 			gl.drawArrays( primitiveType, 3 * i, 3 ); 
 		}
 	}
-	else {			
+	else 
+	{			
 		gl.drawArrays(primitiveType, 0, triangleVertexPositionBuffer.numItems); 
 	}	
 }
 
 
 //  Drawing the 3D scene
-
-function drawScene() {
+function drawScene() 
+{
 	
 	var pMatrix;
 	var mvMatrix = mat4();
@@ -200,7 +202,8 @@ function drawScene() {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
 	// Computing the Projection Matrix
-	if( projectionType == 0 ) {
+	if( projectionType == 0 ) 
+	{
 		// For now, the default orthogonal view volume
 		pMatrix = ortho( -1.0, 1.0, -1.0, 1.0, -1.0, 1.0 );
 		// Global transformation !!
@@ -210,7 +213,8 @@ function drawScene() {
 		pos_Viewer[2] = 1.0;  
 
 	}
-	else {	
+	else 
+	{	
 		// A standard view volume.
 		// Viewer is at (0,0,0)
 		// Ensure that the model is "inside" the view volume
@@ -245,9 +249,10 @@ function drawScene() {
 
 
 // WebGL Initialization
-function initWebGL( canvas ) {
-	try {
-		
+function initWebGL( canvas ) 
+{
+	try 
+	{	
 		// Create the WebGL context
 		// Some browsers still need "experimental-webgl"
 		gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
@@ -268,9 +273,11 @@ function initWebGL( canvas ) {
 		// Enable DEPTH-TEST
 		gl.enable( gl.DEPTH_TEST );
         
-	} catch (e) {
 	}
-	if (!gl) {
+	catch (e) 
+	{}
+	if (!gl) 
+	{
 		alert("Could not initialise WebGL, sorry! :-(");
 	}        
 }
@@ -278,24 +285,30 @@ function initWebGL( canvas ) {
 
 var lastTime = 0;
 
-function animate() {
+function animate() 
+{
 	var timeNow = new Date().getTime();
 	
-	if( lastTime != 0 ) {
+	if( lastTime != 0 ) 
+	{
 		var elapsed = timeNow - lastTime;
 		// Global rotation
-		if( globalRotationYY_ON ) {
+		if( globalRotationYY_ON ) 
+		{
 			globalAngleYY += globalRotationYY_DIR * globalRotationYY_SPEED * (90 * elapsed) / 1000.0;
 	    }
 
 		// Local rotations
-		if( rotationXX_ON ) {
+		if( rotationXX_ON ) 
+		{
 			angleXX += rotationXX_DIR * rotationXX_SPEED * (90 * elapsed) / 1000.0;
 	    }
-		if( rotationYY_ON ) {
+		if( rotationYY_ON ) 
+		{
 			angleYY += rotationYY_DIR * rotationYY_SPEED * (90 * elapsed) / 1000.0;
 	    }
-		if( rotationZZ_ON ) {
+		if( rotationZZ_ON ) 
+		{
 			angleZZ += rotationZZ_DIR * rotationZZ_SPEED * (90 * elapsed) / 1000.0;
 	    }
 	}
@@ -305,7 +318,8 @@ function animate() {
 
 //----------------------------------------------------------------------------
 // Timer
-function tick() {
+function tick() 
+{
 	requestAnimFrame(tick);
 	drawScene();
 	animate();
@@ -317,53 +331,68 @@ function tick() {
 function loadListeners() {
 
     /* X - Rotation */
-    document.getElementById("x-on-button").onclick = function(){
-        console.log("x-on-button");
+	document.getElementById("x-on-button").onclick = function()
+	{
+		rotationXX_ON = 1;
     };
-    document.getElementById("x-off-button").onclick = function(){
-        console.log("x-off-button");
+    document.getElementById("x-off-button").onclick = function()
+	{
+		rotationXX_ON = 0;
     };
-    document.getElementById("x-direction-button").onclick = function(){
+	document.getElementById("x-direction-button").onclick = function()
+	{
         console.log("x-direction-button");
     };
-    document.getElementById("x-slower-button").onclick = function(){
+	document.getElementById("x-slower-button").onclick = function()
+	{
         console.log("x-slower-button");
     };
-    document.getElementById("x-faster-button").onclick = function(){
+	document.getElementById("x-faster-button").onclick = function()
+	{
         console.log("x-faster-button");
     };
 
     /* Y - Rotation */
-    document.getElementById("y-on-button").onclick = function(){
-        console.log("y-on-button");
+    document.getElementById("y-on-button").onclick = function()
+	{
+        rotationYY_ON = 1;
     };
-    document.getElementById("y-off-button").onclick = function(){
-        console.log("y-off-button");
+    document.getElementById("y-off-button").onclick = function()
+	{
+        rotationYY_ON = 0;
     };
-    document.getElementById("y-direction-button").onclick = function(){
+    document.getElementById("y-direction-button").onclick = function()
+	{
         console.log("y-direction-button");
     };
-    document.getElementById("y-slower-button").onclick = function(){
+    document.getElementById("y-slower-button").onclick = function()
+	{
         console.log("y-slower-button");
     };
-    document.getElementById("y-faster-button").onclick = function(){
+    document.getElementById("y-faster-button").onclick = function()
+	{
         console.log("y-faster-button");
     };
 
     /* Z - Rotation */
-    document.getElementById("z-on-button").onclick = function(){
-        console.log("z-on-button");
+    document.getElementById("z-on-button").onclick = function()
+	{
+        rotationZZ_ON = 1;
     };
-    document.getElementById("z-off-button").onclick = function(){
-        console.log("z-off-button");
+    document.getElementById("z-off-button").onclick = function()
+	{
+        rotationZZ_ON = 0;
     };
-    document.getElementById("z-direction-button").onclick = function(){
+    document.getElementById("z-direction-button").onclick = function()
+	{
         console.log("z-direction-button");
     };
-    document.getElementById("z-slower-button").onclick = function(){
+    document.getElementById("z-slower-button").onclick = function()
+	{
         console.log("z-slower-button");
     };
-    document.getElementById("z-faster-button").onclick = function(){
+    document.getElementById("z-faster-button").onclick = function()
+	{
         console.log("z-faster-button");
     };
 
@@ -371,8 +400,9 @@ function loadListeners() {
 	var list = document.getElementById("rendering-mode-selection");
 	list.addEventListener("click", function() {
 
-		var mode = list.selectedIndex;          // Getting the selection
-		switch(mode){
+		var mode = list.selectedIndex;
+		switch(mode)
+		{
 			case 0 : primitiveType = gl.TRIANGLES;
 				break;
 			case 1 : primitiveType = gl.LINE_LOOP;
@@ -385,8 +415,9 @@ function loadListeners() {
     var projectionList = document.getElementById("projection-selection");
 	projectionList.addEventListener("click", function() {
 
-		var p = projectionList.selectedIndex;       // Getting the selection
-		switch(p){
+		var p = projectionList.selectedIndex;
+		switch(p)
+		{
 			case 0 : projectionType = 0;
 				break;
 			case 1 : projectionType = 1;
@@ -395,9 +426,10 @@ function loadListeners() {
     });
     
     var fractalList = document.getElementById("fractal-selection");
-	fractalList.addEventListener("click", function(){
+	fractalList.addEventListener("click", function()
+	{
 		
-		var mode = fractalList.selectedIndex;       // Getting the selection
+		var mode = fractalList.selectedIndex;
 		switch(mode){
 			case 0 : 
 				fractalSelected = 0;
@@ -408,11 +440,15 @@ function loadListeners() {
 			case 2 :
 				fractalSelected = 2;
 				break;
+			case 3 :
+				fractalSelected = 3;
+				break;
 		}
     });
     
     // Reset
-    document.getElementById("reset-button").onclick = function(){
+    document.getElementById("reset-button").onclick = function()
+	{
 		
 		// The initial values
 		// The translation vector
@@ -444,14 +480,16 @@ function loadListeners() {
 		kDiff = [ 0.2, 0.48, 0.72 ]; // COLOR
     };
     
-    document.getElementById("decrease-button").onclick = function(){
+    document.getElementById("decrease-button").onclick = function()
+	{
 		if (numLevels > 0){
 			numLevels = numLevels-1;
 			document.getElementById("num-iterations").innerHTML = numLevels;
 		}
     };
     
-    document.getElementById("increase-button").onclick = function(){
+    document.getElementById("increase-button").onclick = function()
+	{
 		numLevels = numLevels+1;
 		document.getElementById("num-iterations").innerHTML = numLevels;
 	}; 
@@ -459,9 +497,10 @@ function loadListeners() {
 
 
 // Computes the currently selected fractal
-function computeFractal(){
-
-	switch(fractalSelected) {
+function computeFractal()
+{
+	switch(fractalSelected) 
+	{
 		case 0 : 
 			computeSierpinskiGasket();
 			break;
@@ -472,7 +511,11 @@ function computeFractal(){
 		
 		case 2 : 
 			computeMengerSponge();
-			break;	
+			break;
+		
+		case 3 :
+			computeMosely();
+			break;
 	}
 }
 
@@ -482,8 +525,8 @@ function computeFractal(){
 //----------------------------------------------------------------
 // Sierpinski Gasket
 //----------------------------------------------------------------
-function computeSierpinskiGasket() {
-
+function computeSierpinskiGasket()
+{
     var v1 = [ -1.0,  0.0, -0.707 ];
     var v2 = [  0.0,  1.0,  0.707 ];
     var v3 = [  1.0,  0.0, -0.707 ];
@@ -496,17 +539,21 @@ function computeSierpinskiGasket() {
 	computeVertexNormals(vertices, normals);
 }
 
-function divideTetrahedron(v1, v2, v3, v4, recursionLevel) {
-	if (recursionLevel == 0) {
+function divideTetrahedron(v1, v2, v3, v4, recursionLevel) 
+{
+	if (recursionLevel == 0) 
+	{
 		var coordinatesToAdd = [].concat(v1, v2, v3,
             v3, v2, v4,
             v4, v2, v1,
             v1, v3, v4);
-        for (var i = 0; i < 36; i += 1) {
+		for (var i = 0; i < 36; i += 1) 
+		{
             vertices.push(coordinatesToAdd[i]);
         }
 	}
-	else {
+	else 
+	{
 		var vertex12 = computeMidPoint(v1, v2);
 		var vertex13 = computeMidPoint(v1, v3);
 		var vertex14 = computeMidPoint(v1, v4);
@@ -525,8 +572,8 @@ function divideTetrahedron(v1, v2, v3, v4, recursionLevel) {
 //----------------------------------------------------------------
 // Koch Snowflake
 //----------------------------------------------------------------
-function computeKochSnowflake() {
-		
+function computeKochSnowflake() 
+{
 	// Initial vertices of the Tetrahedron
 	var v1 = [ -1.0,  0.0, -0.707 ];
 	var v2 = [  0.0,  1.0,  0.707 ];
@@ -549,7 +596,8 @@ function computeKochSnowflake() {
 
 function divideFace( v1, v2, v3, n )
 {
-	if ( n == 0 ) {
+	if ( n == 0 ) 
+	{
 		return;
 	}
 	
@@ -591,13 +639,14 @@ function computeHeightofTriangle(side)
 	return result;
 }
 
-function addVertexes ( v1, v2, v3, v4){
-	
+function addVertexes ( v1, v2, v3, v4)
+{	
 	var coordinatesToAdd = [].concat(v1, v2, v3,
 		v3, v2, v4,
 		v4, v2, v1,
 		v1, v3, v4);
-	for (var i = 0; i < 36; i += 1) {
+	for (var i = 0; i < 36; i += 1) 
+	{
 		vertices.push(coordinatesToAdd[i]);
 	}
 }
@@ -605,7 +654,8 @@ function addVertexes ( v1, v2, v3, v4){
 function addVector( u, v )
 {	
 	var result = [];
-	for ( var i = 0; i < u.length; ++i ) {
+	for ( var i = 0; i < u.length; ++i ) 
+	{
 		result.push( u[i] + v[i] );
 	}
 
@@ -661,14 +711,18 @@ function defineCube(v1, v2, v3, v4, v5, v6, v7, v8)
         }
 }
 
-function mengerSponge(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel) {	
-	if(recursionLevel < 1) {
+function mengerSponge(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel) 
+{	
+	if(recursionLevel < 1) 
+	{
 		defineCube(v1, v2, v3, v4, v5, v6, v7, v8);
 	}
-	else {
+	else 
+	{
 		recursionLevel--;
 		
-		// -- Divide every face into 9 equally sized squares --
+		// Divide every face into 9 squares
+
 		var distance = computeDistance(v3, v4);
 		var newDistance = distance / 3;
 		
@@ -682,20 +736,19 @@ function mengerSponge(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel) {
 		var front_top_left_7 = [front_top_left_3[0], front_top_left_3[1], front_top_left_3[2] - newDistance];
 		var front_top_left_8 = [front_top_left_4[0], front_top_left_4[1], front_top_left_4[2] - newDistance];
 
-		var front_top_center_1 = front_top_left_2;
-		var front_top_center_2 = [v3[0] - newDistance, v3[1]-newDistance, v3[2]];
-		var front_top_center_3 = [v3[0] - newDistance, v3[1], v3[2]];
-		var front_top_center_4 = front_top_left_3;
-		var front_top_center_5 = [front_top_center_1[0], front_top_center_1[1], front_top_center_1[2] - newDistance];
-		var front_top_center_6 = [front_top_center_2[0], front_top_center_2[1], front_top_center_2[2] - newDistance];
-		var front_top_center_7 = [front_top_center_3[0], front_top_center_3[1], front_top_center_3[2] - newDistance];
-		var front_top_center_8 = [front_top_center_4[0], front_top_center_4[1], front_top_center_4[2] - newDistance];
+		var front_top_mid_1 = front_top_left_2;
+		var front_top_mid_2 = [v3[0] - newDistance, v3[1]-newDistance, v3[2]];
+		var front_top_mid_3 = [v3[0] - newDistance, v3[1], v3[2]];
+		var front_top_mid_4 = front_top_left_3;
+		var front_top_mid_5 = [front_top_mid_1[0], front_top_mid_1[1], front_top_mid_1[2] - newDistance];
+		var front_top_mid_6 = [front_top_mid_2[0], front_top_mid_2[1], front_top_mid_2[2] - newDistance];
+		var front_top_mid_7 = [front_top_mid_3[0], front_top_mid_3[1], front_top_mid_3[2] - newDistance];
+		var front_top_mid_8 = [front_top_mid_4[0], front_top_mid_4[1], front_top_mid_4[2] - newDistance];
 
-		
-		var front_top_right_1 = front_top_center_2;
+		var front_top_right_1 = front_top_mid_2;
 		var front_top_right_2 = [v3[0], v3[1]-newDistance, v3[2]];
 		var front_top_right_3 = v3;
-		var front_top_right_4 = front_top_center_3;
+		var front_top_right_4 = front_top_mid_3;
 		var front_top_right_5 = [front_top_right_1[0], front_top_right_1[1], front_top_right_1[2] - newDistance];
 		var front_top_right_6 = [front_top_right_2[0], front_top_right_2[1], front_top_right_2[2] - newDistance];
 		var front_top_right_7 = [front_top_right_3[0], front_top_right_3[1], front_top_right_3[2] - newDistance];
@@ -728,16 +781,16 @@ function mengerSponge(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel) {
 		var front_bot_left_7 = [front_bot_left_3[0], front_bot_left_3[1], front_bot_left_3[2] - newDistance];
 		var front_bot_left_8 = [front_bot_left_4[0], front_bot_left_4[1], front_bot_left_4[2] - newDistance];
 
-		var front_bot_center_1 = front_bot_left_2;
-		var front_bot_center_2 = [v1[0] + (2*newDistance), v1[1], v1[2]];
-		var front_bot_center_3 = front_mid_right_1;
-		var front_bot_center_4 = front_bot_left_3;
-		var front_bot_center_5 = [front_bot_center_1[0], front_bot_center_1[1], front_bot_center_1[2] - newDistance];
-		var front_bot_center_6 = [front_bot_center_2[0], front_bot_center_2[1], front_bot_center_2[2] - newDistance];
-		var front_bot_center_7 = [front_bot_center_3[0], front_bot_center_3[1], front_bot_center_3[2] - newDistance];
-		var front_bot_center_8 = [front_bot_center_4[0], front_bot_center_4[1], front_bot_center_4[2] - newDistance];
+		var front_bot_mid_1 = front_bot_left_2;
+		var front_bot_mid_2 = [v1[0] + (2*newDistance), v1[1], v1[2]];
+		var front_bot_mid_3 = front_mid_right_1;
+		var front_bot_mid_4 = front_bot_left_3;
+		var front_bot_mid_5 = [front_bot_mid_1[0], front_bot_mid_1[1], front_bot_mid_1[2] - newDistance];
+		var front_bot_mid_6 = [front_bot_mid_2[0], front_bot_mid_2[1], front_bot_mid_2[2] - newDistance];
+		var front_bot_mid_7 = [front_bot_mid_3[0], front_bot_mid_3[1], front_bot_mid_3[2] - newDistance];
+		var front_bot_mid_8 = [front_bot_mid_4[0], front_bot_mid_4[1], front_bot_mid_4[2] - newDistance];
 
-		var front_bot_right_1 = front_bot_center_2;
+		var front_bot_right_1 = front_bot_mid_2;
 		var front_bot_right_2 = v2;
 		var front_bot_right_3 = front_mid_right_2;
 		var front_bot_right_4 = front_mid_right_1;
@@ -793,14 +846,14 @@ function mengerSponge(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel) {
 		var back_top_left_7 = [back_top_left_3[0], back_top_left_3[1], back_top_left_3[2] - newDistance];
 		var back_top_left_8 = [back_top_left_4[0], back_top_left_4[1], back_top_left_4[2] - newDistance];
 
-		var back_top_center_1 = [front_top_center_1[0], front_top_center_1[1], front_top_center_1[2]-(2*newDistance)];
-		var back_top_center_2 = [front_top_center_2[0], front_top_center_2[1], front_top_center_2[2]-(2*newDistance)];
-		var back_top_center_3 = [front_top_center_3[0], front_top_center_3[1], front_top_center_3[2]-(2*newDistance)];
-		var back_top_center_4 = [front_top_center_4[0], front_top_center_4[1], front_top_center_4[2]-(2*newDistance)];
-		var back_top_center_5 = [back_top_center_1[0], back_top_center_1[1], back_top_center_1[2] - newDistance];
-		var back_top_center_6 = [back_top_center_2[0], back_top_center_2[1], back_top_center_2[2] - newDistance];
-		var back_top_center_7 = [back_top_center_3[0], back_top_center_3[1], back_top_center_3[2] - newDistance];
-		var back_top_center_8 = [back_top_center_4[0], back_top_center_4[1], back_top_center_4[2] - newDistance];
+		var back_top_mid_1 = [front_top_mid_1[0], front_top_mid_1[1], front_top_mid_1[2]-(2*newDistance)];
+		var back_top_mid_2 = [front_top_mid_2[0], front_top_mid_2[1], front_top_mid_2[2]-(2*newDistance)];
+		var back_top_mid_3 = [front_top_mid_3[0], front_top_mid_3[1], front_top_mid_3[2]-(2*newDistance)];
+		var back_top_mid_4 = [front_top_mid_4[0], front_top_mid_4[1], front_top_mid_4[2]-(2*newDistance)];
+		var back_top_mid_5 = [back_top_mid_1[0], back_top_mid_1[1], back_top_mid_1[2] - newDistance];
+		var back_top_mid_6 = [back_top_mid_2[0], back_top_mid_2[1], back_top_mid_2[2] - newDistance];
+		var back_top_mid_7 = [back_top_mid_3[0], back_top_mid_3[1], back_top_mid_3[2] - newDistance];
+		var back_top_mid_8 = [back_top_mid_4[0], back_top_mid_4[1], back_top_mid_4[2] - newDistance];
 
 		var back_top_right_1 = [front_top_right_1[0], front_top_right_1[1], front_top_right_1[2]-(2*newDistance)];
 		var back_top_right_2 = [front_top_right_2[0], front_top_right_2[1], front_top_right_2[2]-(2*newDistance)];
@@ -838,14 +891,14 @@ function mengerSponge(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel) {
 		var back_bot_left_7 = [back_bot_left_3[0], back_bot_left_3[1], back_bot_left_3[2] - newDistance];
 		var back_bot_left_8 = [back_bot_left_4[0], back_bot_left_4[1], back_bot_left_4[2] - newDistance];
 
-		var back_bot_center_1 = [front_bot_center_1[0], front_bot_center_1[1], front_bot_center_1[2]-(2*newDistance)];
-		var back_bot_center_2 = [front_bot_center_2[0], front_bot_center_2[1], front_bot_center_2[2]-(2*newDistance)];
-		var back_bot_center_3 = [front_bot_center_3[0], front_bot_center_3[1], front_bot_center_3[2]-(2*newDistance)];
-		var back_bot_center_4 = [front_bot_center_4[0], front_bot_center_4[1], front_bot_center_4[2]-(2*newDistance)];
-		var back_bot_center_5 = [back_bot_center_1[0], back_bot_center_1[1], back_bot_center_1[2] - newDistance];
-		var back_bot_center_6 = [back_bot_center_2[0], back_bot_center_2[1], back_bot_center_2[2] - newDistance];
-		var back_bot_center_7 = [back_bot_center_3[0], back_bot_center_3[1], back_bot_center_3[2] - newDistance];
-		var back_bot_center_8 = [back_bot_center_4[0], back_bot_center_4[1], back_bot_center_4[2] - newDistance];
+		var back_bot_mid_1 = [front_bot_mid_1[0], front_bot_mid_1[1], front_bot_mid_1[2]-(2*newDistance)];
+		var back_bot_mid_2 = [front_bot_mid_2[0], front_bot_mid_2[1], front_bot_mid_2[2]-(2*newDistance)];
+		var back_bot_mid_3 = [front_bot_mid_3[0], front_bot_mid_3[1], front_bot_mid_3[2]-(2*newDistance)];
+		var back_bot_mid_4 = [front_bot_mid_4[0], front_bot_mid_4[1], front_bot_mid_4[2]-(2*newDistance)];
+		var back_bot_mid_5 = [back_bot_mid_1[0], back_bot_mid_1[1], back_bot_mid_1[2] - newDistance];
+		var back_bot_mid_6 = [back_bot_mid_2[0], back_bot_mid_2[1], back_bot_mid_2[2] - newDistance];
+		var back_bot_mid_7 = [back_bot_mid_3[0], back_bot_mid_3[1], back_bot_mid_3[2] - newDistance];
+		var back_bot_mid_8 = [back_bot_mid_4[0], back_bot_mid_4[1], back_bot_mid_4[2] - newDistance];
 
 		var back_bot_right_1 = [front_bot_right_1[0], front_bot_right_1[1], front_bot_right_1[2]-(2*newDistance)];
 		var back_bot_right_2 = [front_bot_right_2[0], front_bot_right_2[1], front_bot_right_2[2]-(2*newDistance)];
@@ -857,12 +910,12 @@ function mengerSponge(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel) {
 		var back_bot_right_8 = [back_bot_right_4[0], back_bot_right_4[1], back_bot_right_4[2] - newDistance];
 
 		mengerSponge(front_top_left_1, front_top_left_2, front_top_left_3, front_top_left_4, front_top_left_5, front_top_left_6, front_top_left_7, front_top_left_8, recursionLevel);
-		mengerSponge(front_top_center_1, front_top_center_2, front_top_center_3, front_top_center_4, front_top_center_5, front_top_center_6, front_top_center_7, front_top_center_8, recursionLevel);
+		mengerSponge(front_top_mid_1, front_top_mid_2, front_top_mid_3, front_top_mid_4, front_top_mid_5, front_top_mid_6, front_top_mid_7, front_top_mid_8, recursionLevel);
 		mengerSponge(front_top_right_1, front_top_right_2, front_top_right_3, front_top_right_4, front_top_right_5, front_top_right_6, front_top_right_7, front_top_right_8, recursionLevel);
 		mengerSponge(front_mid_left_1, front_mid_left_2, front_mid_left_3, front_mid_left_4, front_mid_left_5, front_mid_left_6, front_mid_left_7, front_mid_left_8, recursionLevel);
 		mengerSponge(front_mid_right_1, front_mid_right_2, front_mid_right_3, front_mid_right_4, front_mid_right_5, front_mid_right_6, front_mid_right_7, front_mid_right_8, recursionLevel);
 		mengerSponge(front_bot_left_1, front_bot_left_2, front_bot_left_3, front_bot_left_4, front_bot_left_5, front_bot_left_6, front_bot_left_7, front_bot_left_8, recursionLevel);
- 		mengerSponge(front_bot_center_1, front_bot_center_2, front_bot_center_3, front_bot_center_4, front_bot_center_5, front_bot_center_6, front_bot_center_7, front_bot_center_8, recursionLevel);
+ 		mengerSponge(front_bot_mid_1, front_bot_mid_2, front_bot_mid_3, front_bot_mid_4, front_bot_mid_5, front_bot_mid_6, front_bot_mid_7, front_bot_mid_8, recursionLevel);
 		mengerSponge(front_bot_right_1, front_bot_right_2, front_bot_right_3, front_bot_right_4, front_bot_right_5, front_bot_right_6, front_bot_right_7, front_bot_right_8, recursionLevel);
 
 		mengerSponge(mid_top_right_1, mid_top_right_2, mid_top_right_3, mid_top_right_4, mid_top_right_5, mid_top_right_6, mid_top_right_7, mid_top_right_8, recursionLevel);
@@ -871,13 +924,148 @@ function mengerSponge(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel) {
 		mengerSponge(mid_bot_right_1, mid_bot_right_2, mid_bot_right_3, mid_bot_right_4, mid_bot_right_5, mid_bot_right_6, mid_bot_right_7, mid_bot_right_8, recursionLevel);
  
 		mengerSponge(back_top_left_1, back_top_left_2, back_top_left_3, back_top_left_4, back_top_left_5, back_top_left_6, back_top_left_7, back_top_left_8, recursionLevel);
-		mengerSponge(back_top_center_1, back_top_center_2, back_top_center_3, back_top_center_4, back_top_center_5, back_top_center_6, back_top_center_7, back_top_center_8, recursionLevel);
+		mengerSponge(back_top_mid_1, back_top_mid_2, back_top_mid_3, back_top_mid_4, back_top_mid_5, back_top_mid_6, back_top_mid_7, back_top_mid_8, recursionLevel);
 		mengerSponge(back_top_right_1, back_top_right_2, back_top_right_3, back_top_right_4, back_top_right_5, back_top_right_6, back_top_right_7, back_top_right_8, recursionLevel);
 		mengerSponge(back_mid_left_1, back_mid_left_2, back_mid_left_3, back_mid_left_4, back_mid_left_5, back_mid_left_6, back_mid_left_7, back_mid_left_8, recursionLevel);
 		mengerSponge(back_mid_right_1, back_mid_right_2, back_mid_right_3, back_mid_right_4, back_mid_right_5, back_mid_right_6, back_mid_right_7, back_mid_right_8, recursionLevel);
 		mengerSponge(back_bot_left_1, back_bot_left_2, back_bot_left_3, back_bot_left_4, back_bot_left_5, back_bot_left_6, back_bot_left_7, back_bot_left_8, recursionLevel);
-		mengerSponge(back_bot_center_1, back_bot_center_2, back_bot_center_3, back_bot_center_4, back_bot_center_5, back_bot_center_6, back_bot_center_7, back_bot_center_8, recursionLevel);
+		mengerSponge(back_bot_mid_1, back_bot_mid_2, back_bot_mid_3, back_bot_mid_4, back_bot_mid_5, back_bot_mid_6, back_bot_mid_7, back_bot_mid_8, recursionLevel);
 		mengerSponge(back_bot_right_1, back_bot_right_2, back_bot_right_3, back_bot_right_4, back_bot_right_5, back_bot_right_6, back_bot_right_7, back_bot_right_8, recursionLevel);
  
 	}
+}
+//----------------------------------------------------------------
+// Mosely
+//----------------------------------------------------------------
+function computeMosely()
+{
+	var v1 = [-1, -1,  1];
+    var v2 = [ 1, -1,  1];
+    var v3 = [ 1,  1,  1];
+    var v4 = [-1,  1,  1];        
+    var v5 = [-1, -1, -1];
+    var v6 = [ 1, -1, -1];
+    var v7 = [ 1,  1, -1];
+	var v8 = [-1,  1, -1];
+	
+	vertices = [];
+	normals = [];
+
+	mosely(v1, v2, v3, v4, v5, v6, v7, v8, numLevels);
+	computeVertexNormals(vertices, normals);
+}
+
+
+function mosely(v1, v2, v3, v4, v5, v6, v7, v8, n)
+{
+	if(n==0)
+	{
+		defineCube(v1, v2, v3, v4, v5, v6, v7, v8);
+	}
+	else
+	{
+		n = n - 1;
+		
+		var v12 = interpolate(v1, v2, 0.33);
+		var v13 = interpolate(v1, v3, 0.33);
+		var v14 = interpolate(v1, v4, 0.33);
+		var v15 = interpolate(v1, v5, 0.33);
+		var v16 = interpolate(v1, v6, 0.33);
+		var v17 = interpolate(v1, v7, 0.33);
+		var v18 = interpolate(v1, v8, 0.33);
+		
+		var v21 = interpolate(v2, v1, 0.33);
+		var v23 = interpolate(v2, v3, 0.33);
+		var v24 = interpolate(v2, v4, 0.33);
+		var v25 = interpolate(v2, v5, 0.33);
+		var v26 = interpolate(v2, v6, 0.33);
+		var v27 = interpolate(v2, v7, 0.33);
+		var v28 = interpolate(v2, v8, 0.33);
+		
+		var v31 = interpolate(v3, v1, 0.33);
+		var v32 = interpolate(v3, v2, 0.33);
+		var v34 = interpolate(v3, v4, 0.33);
+		var v35 = interpolate(v3, v5, 0.33);
+		var v36 = interpolate(v3, v6, 0.33);
+		var v37 = interpolate(v3, v7, 0.33);
+		var v38 = interpolate(v3, v8, 0.33);
+		
+		var v41 = interpolate(v4, v1, 0.33);
+		var v42 = interpolate(v4, v2, 0.33);
+		var v43 = interpolate(v4, v3, 0.33);
+		var v45 = interpolate(v4, v5, 0.33);
+		var v46 = interpolate(v4, v6, 0.33);
+		var v47 = interpolate(v4, v7, 0.33);
+		var v48 = interpolate(v4, v8, 0.33);
+		
+		var v51 = interpolate(v5, v1, 0.33);
+		var v52 = interpolate(v5, v2, 0.33);
+		var v53 = interpolate(v5, v3, 0.33);
+		var v54 = interpolate(v5, v4, 0.33);
+		var v56 = interpolate(v5, v6, 0.33);
+		var v57 = interpolate(v5, v7, 0.33);
+		var v58 = interpolate(v5, v8, 0.33);
+		
+		var v61 = interpolate(v6, v1, 0.33);
+		var v62 = interpolate(v6, v2, 0.33);
+		var v64 = interpolate(v6, v4, 0.33);
+		var v65 = interpolate(v6, v5, 0.33);
+		var v63 = interpolate(v6, v3, 0.33);
+		var v67 = interpolate(v6, v7, 0.33);
+		var v68 = interpolate(v6, v8, 0.33);
+		
+		var v71 = interpolate(v7, v1, 0.33);
+		var v72 = interpolate(v7, v2, 0.33);
+		var v74 = interpolate(v7, v4, 0.33);
+		var v75 = interpolate(v7, v5, 0.33);
+		var v76 = interpolate(v7, v6, 0.33);
+		var v73 = interpolate(v7, v3, 0.33);
+		var v78 = interpolate(v7, v8, 0.33);
+		
+		var v81 = interpolate(v8, v1, 0.33);
+		var v82 = interpolate(v8, v2, 0.33);
+		var v84 = interpolate(v8, v4, 0.33);
+		var v85 = interpolate(v8, v5, 0.33);
+		var v86 = interpolate(v8, v6, 0.33);
+		var v87 = interpolate(v8, v7, 0.33);
+		var v83 = interpolate(v8, v3, 0.33);
+		
+		
+		//vertex # 	    1    2    3    4    5    6    7    8
+		mosely(v12, v21, v24, v13, v16, v25, v28, v17, n);
+		mosely(v24, v23, v32, v31, v28, v27, v36, v35, n);
+		mosely(v42, v31, v34, v43, v46, v35, v38, v47, n);
+		mosely(v14, v13, v42, v41, v18, v17, v46, v45, n);
+		mosely(v13, v24, v31, v42, v17, v28, v35, v46, n);
+			
+		mosely(v52, v61, v64, v53, v56, v65, v68, v57, n);
+		mosely(v64, v63, v72, v71, v68, v67, v76, v75, n);
+		mosely(v82, v71, v74, v83, v86, v75, v78, v87, n);
+		mosely(v54, v53, v82, v81, v58, v57, v86, v85, n);
+		mosely(v53, v64, v71, v82, v57, v68, v75, v86, n);
+		
+		mosely(v15, v16, v17, v18, v51, v52, v53, v54, n);
+		mosely(v25, v26, v27, v28, v61, v62, v63, v64, n);
+		mosely(v16, v25, v28, v17, v52, v61, v64, v53, n);
+		
+		mosely(v35, v36, v37, v38, v71, v72, v73, v74, n);
+		mosely(v45, v46, v47, v48, v81, v82, v83, v84, n);
+		mosely(v46, v35, v38, v47, v82, v71, v74, v83, n); 
+		
+		mosely(v18, v17, v46, v45, v54, v53, v82, v81, n);
+		
+		mosely(v46, v35, v38, v47, v82, v71, v74, v83, n);
+		mosely(v28, v27, v36, v35, v64, v63, v72, v71, n);	
+	}
+}
+
+function interpolate( u, v, s )
+{		
+	var result = [];
+	for ( var i = 0; i < u.length; i++ )
+	{
+		result.push( (1.0 - s) * u[i] +  s * v[i] );
+	}
+
+	return result;
 }
