@@ -341,15 +341,15 @@ function loadListeners() {
     };
 	document.getElementById("x-direction-button").onclick = function()
 	{
-        console.log("x-direction-button");
+        rotationXX_DIR = -rotationXX_DIR;
     };
 	document.getElementById("x-slower-button").onclick = function()
 	{
-        console.log("x-slower-button");
+		rotationXX_SPEED *= 0.75;
     };
 	document.getElementById("x-faster-button").onclick = function()
 	{
-        console.log("x-faster-button");
+		rotationXX_SPEED *= 1.25;
     };
 
     /* Y - Rotation */
@@ -363,15 +363,15 @@ function loadListeners() {
     };
     document.getElementById("y-direction-button").onclick = function()
 	{
-        console.log("y-direction-button");
+        rotationYY_DIR = -rotationYY_DIR;
     };
     document.getElementById("y-slower-button").onclick = function()
 	{
-        console.log("y-slower-button");
+		rotationYY_SPEED *= 0.75;
     };
     document.getElementById("y-faster-button").onclick = function()
 	{
-        console.log("y-faster-button");
+        rotationYY_SPEED *= 1.25;
     };
 
     /* Z - Rotation */
@@ -385,15 +385,15 @@ function loadListeners() {
     };
     document.getElementById("z-direction-button").onclick = function()
 	{
-        console.log("z-direction-button");
+        rotationZZ_DIR = -rotationZZ_DIR;
     };
     document.getElementById("z-slower-button").onclick = function()
 	{
-        console.log("z-slower-button");
+        rotationZZ_SPEED *= 0.75;
     };
     document.getElementById("z-faster-button").onclick = function()
 	{
-        console.log("z-faster-button");
+        rotationZZ_SPEED *= 1.25;
     };
 
     // Dropdown lists
