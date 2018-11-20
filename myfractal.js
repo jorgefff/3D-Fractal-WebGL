@@ -326,6 +326,42 @@ function tick()
 }
 
 
+// Handling mouse events
+// Adapted from www.learningwebgl.com
+var mouseDown = false;
+var lastMouseX = null;
+var lastMouseY = null;
+
+function handleMouseDown(event)
+{
+    mouseDown = true;
+    lastMouseX = event.clientX;
+    lastMouseY = event.clientY;
+}
+
+function handleMouseUp(event) 
+{
+    mouseDown = false;
+}
+
+function handleMouseMove(event) 
+{
+	if (!mouseDown) 
+	{
+      return;
+    } 
+  
+    // Rotation angles proportional to cursor displacement
+    var newX = event.clientX;
+    var newY = event.clientY;
+    var deltaX = newX - lastMouseX;
+    angleYY += radians( 10 * deltaX  )
+    var deltaY = newY - lastMouseY;
+    angleXX += radians( 10 * deltaY  )
+    lastMouseX = newX    
+    lastMouseY = newY;
+  }
+
 
 // Button events
 function loadListeners() {
@@ -394,7 +430,47 @@ function loadListeners() {
     document.getElementById("z-faster-button").onclick = function()
 	{
         rotationZZ_SPEED *= 1.25;
-    };
+	};
+	
+	// Mouse events
+	canvas.onmousedown = handleMouseDown;
+    document.onmouseup = handleMouseUp;
+	document.onmousemove = handleMouseMove;
+
+	// Mouse wheel
+	canvas.addEventListener('wheel', function(event) 
+	{
+		if(event.deltaY > 0) 
+		{
+			// Zoom in
+			if (sx <= 0.1) 
+			{
+				sx = 0.1;
+				sy = 0.1;
+				sz = 0.1;
+			} else 
+			{
+				sx -= 0.1;
+				sy -= 0.1;
+				sz -= 0.1;
+			}
+		} 
+		else 
+		{
+			// Zoom out
+			if (sx >= 1) 
+			{
+				sx = 0.9;
+				sy = 0.9;
+				sz = 0.9;
+			} else 
+			{
+				sx += 0.1;
+				sy += 0.1;
+				sz += 0.1;
+			}
+		}
+	}, false);
 
     // Dropdown lists
 	var list = document.getElementById("rendering-mode-selection");
