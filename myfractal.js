@@ -519,6 +519,9 @@ function loadListeners() {
 			case 3 :
 				fractalSelected = 3;
 				break;
+			case 4 :
+				fractalSelected = 4;
+				break;
 		}
     });
     
@@ -592,11 +595,128 @@ function computeFractal()
 		case 3 :
 			computeMosely();
 			break;
+		case 4 :
+			computeMyFractal();
+			break;
 	}
 }
 
 //------------------------------------------------------------------
 // Fractal computing
+
+function computeMyFractal(v1, v2, v3, v4, v5, v6, v7, v8, recLevel)
+{
+	var v1 = [-1, -1,  1];       
+	var v2 = [ 1, -1,  1];        
+	var v3 = [ 1,  1,  1];     
+	var v4 = [-1,  1,  1];        
+	var v5 = [-1, -1, -1];  
+	var v6 = [ 1, -1, -1];       
+	var v7 = [ 1,  1, -1];        
+	var v8 = [-1,  1, -1];
+	
+	vertices = [];
+	normals = [];
+	
+	myFractal(v1, v2, v3, v4, v5, v6, v7, v8, numLevels);
+	computeVertexNormals(vertices, normals);
+}
+
+function myFractal(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel) 
+{	
+	
+	if(recursionLevel < 1) 
+	{
+		defineCube(v1, v2, v3, v4, v5, v6, v7, v8);
+	}
+	else 
+	{
+		recursionLevel--;
+		
+		// Divide every face into 9 squares
+
+		var distance = computeDistance(v3, v4);
+		var newDistance = distance / 3;
+		
+		//  ZZ_YY_XX
+		// Front cube
+		var front_mid_mid_1 = [v3[0] - (2*newDistance), v3[1]-(2*newDistance), v3[2]];
+		var front_mid_mid_2 = [v3[0] - newDistance, v3[1]-(2*newDistance), v3[2]];
+		var front_mid_mid_3 = [v3[0] - newDistance, v3[1]-newDistance, v3[2]];
+		var front_mid_mid_4 = [v3[0] - (2*newDistance), v3[1] - newDistance, v3[2]];
+		var front_mid_mid_5 = [front_mid_mid_1[0], front_mid_mid_1[1], front_mid_mid_1[2] - newDistance];
+		var front_mid_mid_6 = [front_mid_mid_2[0], front_mid_mid_2[1], front_mid_mid_2[2] - newDistance];
+		var front_mid_mid_7 = [front_mid_mid_3[0], front_mid_mid_3[1], front_mid_mid_3[2] - newDistance];
+		var front_mid_mid_8 = [front_mid_mid_4[0], front_mid_mid_4[1], front_mid_mid_4[2] - newDistance];
+		
+		// Mid cubes
+		var mid_top_mid_1 = front_mid_mid_8;
+		var mid_top_mid_2 = front_mid_mid_7;
+		var mid_top_mid_3 = [v3[0] - newDistance, v3[1], v3[2] - newDistance];
+		var mid_top_mid_4 = [v3[0] - (2*newDistance), v3[1], v3[2] - newDistance];
+		var mid_top_mid_5 = [mid_top_mid_1[0], mid_top_mid_1[1], mid_top_mid_1[2] - newDistance];
+		var mid_top_mid_6 = [mid_top_mid_2[0], mid_top_mid_2[1], mid_top_mid_2[2] - newDistance];
+		var mid_top_mid_7 = [mid_top_mid_3[0], mid_top_mid_3[1], mid_top_mid_3[2] - newDistance];
+		var mid_top_mid_8 = [mid_top_mid_4[0], mid_top_mid_4[1], mid_top_mid_4[2] - newDistance];
+
+		var mid_mid_left_1 = [v3[0] - distance, v3[1]-(2*newDistance), v3[2] - newDistance];
+		var mid_mid_left_2 = front_mid_mid_5;
+		var mid_mid_left_3 = front_mid_mid_8;
+		var mid_mid_left_4 = [v3[0] - distance, v3[1] - newDistance, v3[2] - newDistance];
+		var mid_mid_left_5 = [mid_mid_left_1[0], mid_mid_left_1[1], mid_mid_left_1[2] - newDistance];
+		var mid_mid_left_6 = [mid_mid_left_2[0], mid_mid_left_2[1], mid_mid_left_2[2] - newDistance];
+		var mid_mid_left_7 = [mid_mid_left_3[0], mid_mid_left_3[1], mid_mid_left_3[2] - newDistance];
+		var mid_mid_left_8 = [mid_mid_left_4[0], mid_mid_left_4[1], mid_mid_left_4[2] - newDistance];
+
+		var mid_mid_mid_1 = [front_mid_mid_1[0], front_mid_mid_1[1], front_mid_mid_1[2] - newDistance];
+		var mid_mid_mid_2 = [front_mid_mid_2[0], front_mid_mid_2[1], front_mid_mid_2[2] - newDistance];
+		var mid_mid_mid_3 = [front_mid_mid_3[0], front_mid_mid_3[1], front_mid_mid_3[2] - newDistance];
+		var mid_mid_mid_4 = [front_mid_mid_4[0], front_mid_mid_4[1], front_mid_mid_4[2] - newDistance];
+		var mid_mid_mid_5 = [front_mid_mid_5[0], front_mid_mid_5[1], front_mid_mid_5[2] - newDistance];
+		var mid_mid_mid_6 = [front_mid_mid_6[0], front_mid_mid_6[1], front_mid_mid_6[2] - newDistance];
+		var mid_mid_mid_7 = [front_mid_mid_7[0], front_mid_mid_7[1], front_mid_mid_7[2] - newDistance];
+		var mid_mid_mid_8 = [front_mid_mid_8[0], front_mid_mid_8[1], front_mid_mid_8[2] - newDistance];
+
+		var mid_mid_right_1 = front_mid_mid_6;
+		var mid_mid_right_2 = [v3[0], v3[1]-(2*newDistance), v3[2] - newDistance];
+		var mid_mid_right_3 = [v3[0], v3[1]-newDistance, v3[2] - newDistance];
+		var mid_mid_right_4 = front_mid_mid_7;
+		var mid_mid_right_5 = [mid_mid_right_1[0], mid_mid_right_1[1], mid_mid_right_1[2] - newDistance];
+		var mid_mid_right_6 = [mid_mid_right_2[0], mid_mid_right_2[1], mid_mid_right_2[2] - newDistance];
+		var mid_mid_right_7 = [mid_mid_right_3[0], mid_mid_right_3[1], mid_mid_right_3[2] - newDistance];
+		var mid_mid_right_8 = [mid_mid_right_4[0], mid_mid_right_4[1], mid_mid_right_4[2] - newDistance];
+
+		var mid_bot_mid_1 = [v1[0] + newDistance, v1[1], v1[2] - newDistance];
+		var mid_bot_mid_2 = [v1[0] + (2*newDistance), v1[1], v1[2]- newDistance];
+		var mid_bot_mid_3 = front_mid_mid_6;
+		var mid_bot_mid_4 = front_mid_mid_5;
+		var mid_bot_mid_5 = [mid_bot_mid_1[0], mid_bot_mid_1[1], mid_bot_mid_1[2] - newDistance];
+		var mid_bot_mid_6 = [mid_bot_mid_2[0], mid_bot_mid_2[1], mid_bot_mid_2[2] - newDistance];
+		var mid_bot_mid_7 = [mid_bot_mid_3[0], mid_bot_mid_3[1], mid_bot_mid_3[2] - newDistance];
+		var mid_bot_mid_8 = [mid_bot_mid_4[0], mid_bot_mid_4[1], mid_bot_mid_4[2] - newDistance];
+
+		// Back cube
+		var back_mid_mid_1 = [front_mid_mid_1[0], front_mid_mid_1[1], front_mid_mid_1[2] - 2*newDistance];
+		var back_mid_mid_2 = [front_mid_mid_2[0], front_mid_mid_2[1], front_mid_mid_2[2] - 2*newDistance];
+		var back_mid_mid_3 = [front_mid_mid_3[0], front_mid_mid_3[1], front_mid_mid_3[2] - 2*newDistance];
+		var back_mid_mid_4 = [front_mid_mid_4[0], front_mid_mid_4[1], front_mid_mid_4[2] - 2*newDistance];
+		var back_mid_mid_5 = [front_mid_mid_5[0], front_mid_mid_5[1], front_mid_mid_5[2] - 2*newDistance];
+		var back_mid_mid_6 = [front_mid_mid_6[0], front_mid_mid_6[1], front_mid_mid_6[2] - 2*newDistance];
+		var back_mid_mid_7 = [front_mid_mid_7[0], front_mid_mid_7[1], front_mid_mid_7[2] - 2*newDistance];
+		var back_mid_mid_8 = [front_mid_mid_8[0], front_mid_mid_8[1], front_mid_mid_8[2] - 2*newDistance];
+		
+		myFractal(front_mid_mid_1, front_mid_mid_2, front_mid_mid_3, front_mid_mid_4, front_mid_mid_5, front_mid_mid_6, front_mid_mid_7, front_mid_mid_8, recursionLevel);
+		
+		myFractal(mid_top_mid_1, mid_top_mid_2, mid_top_mid_3, mid_top_mid_4, mid_top_mid_5, mid_top_mid_6, mid_top_mid_7, mid_top_mid_8, recursionLevel);
+		myFractal(mid_mid_left_1, mid_mid_left_2, mid_mid_left_3, mid_mid_left_4, mid_mid_left_5, mid_mid_left_6, mid_mid_left_7, mid_mid_left_8, recursionLevel);
+		myFractal(mid_mid_mid_1, mid_mid_mid_2, mid_mid_mid_3, mid_mid_mid_4, mid_mid_mid_5, mid_mid_mid_6, mid_mid_mid_7, mid_mid_mid_8, recursionLevel);
+		myFractal(mid_mid_right_1, mid_mid_right_2, mid_mid_right_3, mid_mid_right_4, mid_mid_right_5, mid_mid_right_6, mid_mid_right_7, mid_mid_right_8, recursionLevel);
+		myFractal(mid_bot_mid_1, mid_bot_mid_2, mid_bot_mid_3, mid_bot_mid_4, mid_bot_mid_5, mid_bot_mid_6, mid_bot_mid_7, mid_bot_mid_8, recursionLevel);
+		 
+		myFractal(back_mid_mid_1, back_mid_mid_2, back_mid_mid_3, back_mid_mid_4, back_mid_mid_5, back_mid_mid_6, back_mid_mid_7, back_mid_mid_8, recursionLevel);
+
+	}
+}
 
 //----------------------------------------------------------------
 // Sierpinski Gasket
@@ -1040,74 +1160,76 @@ function mosely(v1, v2, v3, v4, v5, v6, v7, v8, n)
 	}
 	else
 	{
-		n = n - 1;
+		n--;
+
+		var s = 0.33;
+
+		var v12 = interpolate(v1, v2, s);
+		var v13 = interpolate(v1, v3, s);
+		var v14 = interpolate(v1, v4, s);
+		var v15 = interpolate(v1, v5, s);
+		var v16 = interpolate(v1, v6, s);
+		var v17 = interpolate(v1, v7, s);
+		var v18 = interpolate(v1, v8, s);
 		
-		var v12 = interpolate(v1, v2, 0.33);
-		var v13 = interpolate(v1, v3, 0.33);
-		var v14 = interpolate(v1, v4, 0.33);
-		var v15 = interpolate(v1, v5, 0.33);
-		var v16 = interpolate(v1, v6, 0.33);
-		var v17 = interpolate(v1, v7, 0.33);
-		var v18 = interpolate(v1, v8, 0.33);
+		var v21 = interpolate(v2, v1, s);
+		var v23 = interpolate(v2, v3, s);
+		var v24 = interpolate(v2, v4, s);
+		var v25 = interpolate(v2, v5, s);
+		var v26 = interpolate(v2, v6, s);
+		var v27 = interpolate(v2, v7, s);
+		var v28 = interpolate(v2, v8, s);
 		
-		var v21 = interpolate(v2, v1, 0.33);
-		var v23 = interpolate(v2, v3, 0.33);
-		var v24 = interpolate(v2, v4, 0.33);
-		var v25 = interpolate(v2, v5, 0.33);
-		var v26 = interpolate(v2, v6, 0.33);
-		var v27 = interpolate(v2, v7, 0.33);
-		var v28 = interpolate(v2, v8, 0.33);
+		var v31 = interpolate(v3, v1, s);
+		var v32 = interpolate(v3, v2, s);
+		var v34 = interpolate(v3, v4, s);
+		var v35 = interpolate(v3, v5, s);
+		var v36 = interpolate(v3, v6, s);
+		var v37 = interpolate(v3, v7, s);
+		var v38 = interpolate(v3, v8, s);
 		
-		var v31 = interpolate(v3, v1, 0.33);
-		var v32 = interpolate(v3, v2, 0.33);
-		var v34 = interpolate(v3, v4, 0.33);
-		var v35 = interpolate(v3, v5, 0.33);
-		var v36 = interpolate(v3, v6, 0.33);
-		var v37 = interpolate(v3, v7, 0.33);
-		var v38 = interpolate(v3, v8, 0.33);
+		var v41 = interpolate(v4, v1, s);
+		var v42 = interpolate(v4, v2, s);
+		var v43 = interpolate(v4, v3, s);
+		var v45 = interpolate(v4, v5, s);
+		var v46 = interpolate(v4, v6, s);
+		var v47 = interpolate(v4, v7, s);
+		var v48 = interpolate(v4, v8, s);
 		
-		var v41 = interpolate(v4, v1, 0.33);
-		var v42 = interpolate(v4, v2, 0.33);
-		var v43 = interpolate(v4, v3, 0.33);
-		var v45 = interpolate(v4, v5, 0.33);
-		var v46 = interpolate(v4, v6, 0.33);
-		var v47 = interpolate(v4, v7, 0.33);
-		var v48 = interpolate(v4, v8, 0.33);
+		var v51 = interpolate(v5, v1, s);
+		var v52 = interpolate(v5, v2, s);
+		var v53 = interpolate(v5, v3, s);
+		var v54 = interpolate(v5, v4, s);
+		var v56 = interpolate(v5, v6, s);
+		var v57 = interpolate(v5, v7, s);
+		var v58 = interpolate(v5, v8, s);
 		
-		var v51 = interpolate(v5, v1, 0.33);
-		var v52 = interpolate(v5, v2, 0.33);
-		var v53 = interpolate(v5, v3, 0.33);
-		var v54 = interpolate(v5, v4, 0.33);
-		var v56 = interpolate(v5, v6, 0.33);
-		var v57 = interpolate(v5, v7, 0.33);
-		var v58 = interpolate(v5, v8, 0.33);
+		var v61 = interpolate(v6, v1, s);
+		var v62 = interpolate(v6, v2, s);
+		var v64 = interpolate(v6, v4, s);
+		var v65 = interpolate(v6, v5, s);
+		var v63 = interpolate(v6, v3, s);
+		var v67 = interpolate(v6, v7, s);
+		var v68 = interpolate(v6, v8, s);
 		
-		var v61 = interpolate(v6, v1, 0.33);
-		var v62 = interpolate(v6, v2, 0.33);
-		var v64 = interpolate(v6, v4, 0.33);
-		var v65 = interpolate(v6, v5, 0.33);
-		var v63 = interpolate(v6, v3, 0.33);
-		var v67 = interpolate(v6, v7, 0.33);
-		var v68 = interpolate(v6, v8, 0.33);
+		var v71 = interpolate(v7, v1, s);
+		var v72 = interpolate(v7, v2, s);
+		var v74 = interpolate(v7, v4, s);
+		var v75 = interpolate(v7, v5, s);
+		var v76 = interpolate(v7, v6, s);
+		var v73 = interpolate(v7, v3, s);
+		var v78 = interpolate(v7, v8, s);
 		
-		var v71 = interpolate(v7, v1, 0.33);
-		var v72 = interpolate(v7, v2, 0.33);
-		var v74 = interpolate(v7, v4, 0.33);
-		var v75 = interpolate(v7, v5, 0.33);
-		var v76 = interpolate(v7, v6, 0.33);
-		var v73 = interpolate(v7, v3, 0.33);
-		var v78 = interpolate(v7, v8, 0.33);
-		
-		var v81 = interpolate(v8, v1, 0.33);
-		var v82 = interpolate(v8, v2, 0.33);
-		var v84 = interpolate(v8, v4, 0.33);
-		var v85 = interpolate(v8, v5, 0.33);
-		var v86 = interpolate(v8, v6, 0.33);
-		var v87 = interpolate(v8, v7, 0.33);
-		var v83 = interpolate(v8, v3, 0.33);
+		var v81 = interpolate(v8, v1, s);
+		var v82 = interpolate(v8, v2, s);
+		var v84 = interpolate(v8, v4, s);
+		var v85 = interpolate(v8, v5, s);
+		var v86 = interpolate(v8, v6, s);
+		var v87 = interpolate(v8, v7, s);
+		var v83 = interpolate(v8, v3, s);
 		
 		
-		//vertex # 	    1    2    3    4    5    6    7    8
+		//vert# 1    2    3    4    5    6    7    8
 		mosely(v12, v21, v24, v13, v16, v25, v28, v17, n);
 		mosely(v24, v23, v32, v31, v28, v27, v36, v35, n);
 		mosely(v42, v31, v34, v43, v46, v35, v38, v47, n);
@@ -1138,6 +1260,9 @@ function mosely(v1, v2, v3, v4, v5, v6, v7, v8, n)
 function interpolate( u, v, s )
 {		
 	var result = [];
+	// result.push( (1.0 - s) * u[0] + s * v[0]);
+	// result.push( (1.0 - s) * u[1] + s * v[1]);
+	// result.push( (1.0 - s) * u[2] + s * v[2]);
 	for ( var i = 0; i < u.length; i++ )
 	{
 		result.push( (1.0 - s) * u[i] +  s * v[i] );
