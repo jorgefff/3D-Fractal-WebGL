@@ -627,7 +627,7 @@ function myFractal(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel)
 	
 	if(recursionLevel < 1) 
 	{
-		defineCube(v1, v2, v3, v4, v5, v6, v7, v8);
+		makeCube(v1, v2, v3, v4, v5, v6, v7, v8);
 	}
 	else 
 	{
@@ -888,7 +888,7 @@ function computeMengerSponge() {
 	computeVertexNormals(vertices, normals);
 }
 
-function defineCube(v1, v2, v3, v4, v5, v6, v7, v8)
+function makeCube(v1, v2, v3, v4, v5, v6, v7, v8)
 {
 	var toAdd = [].concat(v1, v2, v3,
                           v1, v3, v4,
@@ -902,7 +902,8 @@ function defineCube(v1, v2, v3, v4, v5, v6, v7, v8)
                           v6, v3, v2,
                           v5, v1, v4,
                           v5, v4, v8);
-        for (var i = 0; i < toAdd.length; i += 1) {
+		for (var i = 0; i < toAdd.length; i += 1) 
+		{
             vertices.push(toAdd[i]);
         }
 }
@@ -911,7 +912,7 @@ function mengerSponge(v1, v2, v3, v4, v5, v6, v7, v8, recursionLevel)
 {	
 	if(recursionLevel < 1) 
 	{
-		defineCube(v1, v2, v3, v4, v5, v6, v7, v8);
+		makeCube(v1, v2, v3, v4, v5, v6, v7, v8);
 	}
 	else 
 	{
@@ -1156,77 +1157,76 @@ function mosely(v1, v2, v3, v4, v5, v6, v7, v8, n)
 {
 	if(n==0)
 	{
-		defineCube(v1, v2, v3, v4, v5, v6, v7, v8);
+		makeCube(v1, v2, v3, v4, v5, v6, v7, v8);
 	}
 	else
 	{
 		n--;
 
-		var s = 0.33;
 
-		var v12 = interpolate(v1, v2, s);
-		var v13 = interpolate(v1, v3, s);
-		var v14 = interpolate(v1, v4, s);
-		var v15 = interpolate(v1, v5, s);
-		var v16 = interpolate(v1, v6, s);
-		var v17 = interpolate(v1, v7, s);
-		var v18 = interpolate(v1, v8, s);
+		var v12 = mosely_coords(v1, v2);
+		var v13 = mosely_coords(v1, v3);
+		var v14 = mosely_coords(v1, v4);
+		var v15 = mosely_coords(v1, v5);
+		var v16 = mosely_coords(v1, v6);
+		var v17 = mosely_coords(v1, v7);
+		var v18 = mosely_coords(v1, v8);
 		
-		var v21 = interpolate(v2, v1, s);
-		var v23 = interpolate(v2, v3, s);
-		var v24 = interpolate(v2, v4, s);
-		var v25 = interpolate(v2, v5, s);
-		var v26 = interpolate(v2, v6, s);
-		var v27 = interpolate(v2, v7, s);
-		var v28 = interpolate(v2, v8, s);
+		var v21 = mosely_coords(v2, v1);
+		var v23 = mosely_coords(v2, v3);
+		var v24 = mosely_coords(v2, v4);
+		var v25 = mosely_coords(v2, v5);
+		var v26 = mosely_coords(v2, v6);
+		var v27 = mosely_coords(v2, v7);
+		var v28 = mosely_coords(v2, v8);
 		
-		var v31 = interpolate(v3, v1, s);
-		var v32 = interpolate(v3, v2, s);
-		var v34 = interpolate(v3, v4, s);
-		var v35 = interpolate(v3, v5, s);
-		var v36 = interpolate(v3, v6, s);
-		var v37 = interpolate(v3, v7, s);
-		var v38 = interpolate(v3, v8, s);
+		var v31 = mosely_coords(v3, v1);
+		var v32 = mosely_coords(v3, v2);
+		var v34 = mosely_coords(v3, v4);
+		var v35 = mosely_coords(v3, v5);
+		var v36 = mosely_coords(v3, v6);
+		var v37 = mosely_coords(v3, v7);
+		var v38 = mosely_coords(v3, v8);
 		
-		var v41 = interpolate(v4, v1, s);
-		var v42 = interpolate(v4, v2, s);
-		var v43 = interpolate(v4, v3, s);
-		var v45 = interpolate(v4, v5, s);
-		var v46 = interpolate(v4, v6, s);
-		var v47 = interpolate(v4, v7, s);
-		var v48 = interpolate(v4, v8, s);
+		var v41 = mosely_coords(v4, v1);
+		var v42 = mosely_coords(v4, v2);
+		var v43 = mosely_coords(v4, v3);
+		var v45 = mosely_coords(v4, v5);
+		var v46 = mosely_coords(v4, v6);
+		var v47 = mosely_coords(v4, v7);
+		var v48 = mosely_coords(v4, v8);
 		
-		var v51 = interpolate(v5, v1, s);
-		var v52 = interpolate(v5, v2, s);
-		var v53 = interpolate(v5, v3, s);
-		var v54 = interpolate(v5, v4, s);
-		var v56 = interpolate(v5, v6, s);
-		var v57 = interpolate(v5, v7, s);
-		var v58 = interpolate(v5, v8, s);
+		var v51 = mosely_coords(v5, v1);
+		var v52 = mosely_coords(v5, v2);
+		var v53 = mosely_coords(v5, v3);
+		var v54 = mosely_coords(v5, v4);
+		var v56 = mosely_coords(v5, v6);
+		var v57 = mosely_coords(v5, v7);
+		var v58 = mosely_coords(v5, v8);
 		
-		var v61 = interpolate(v6, v1, s);
-		var v62 = interpolate(v6, v2, s);
-		var v64 = interpolate(v6, v4, s);
-		var v65 = interpolate(v6, v5, s);
-		var v63 = interpolate(v6, v3, s);
-		var v67 = interpolate(v6, v7, s);
-		var v68 = interpolate(v6, v8, s);
+		var v61 = mosely_coords(v6, v1);
+		var v62 = mosely_coords(v6, v2);
+		var v64 = mosely_coords(v6, v4);
+		var v65 = mosely_coords(v6, v5);
+		var v63 = mosely_coords(v6, v3);
+		var v67 = mosely_coords(v6, v7);
+		var v68 = mosely_coords(v6, v8);
 		
-		var v71 = interpolate(v7, v1, s);
-		var v72 = interpolate(v7, v2, s);
-		var v74 = interpolate(v7, v4, s);
-		var v75 = interpolate(v7, v5, s);
-		var v76 = interpolate(v7, v6, s);
-		var v73 = interpolate(v7, v3, s);
-		var v78 = interpolate(v7, v8, s);
+		var v71 = mosely_coords(v7, v1);
+		var v72 = mosely_coords(v7, v2);
+		var v74 = mosely_coords(v7, v4);
+		var v75 = mosely_coords(v7, v5);
+		var v76 = mosely_coords(v7, v6);
+		var v73 = mosely_coords(v7, v3);
+		var v78 = mosely_coords(v7, v8);
 		
-		var v81 = interpolate(v8, v1, s);
-		var v82 = interpolate(v8, v2, s);
-		var v84 = interpolate(v8, v4, s);
-		var v85 = interpolate(v8, v5, s);
-		var v86 = interpolate(v8, v6, s);
-		var v87 = interpolate(v8, v7, s);
-		var v83 = interpolate(v8, v3, s);
+		var v81 = mosely_coords(v8, v1);
+		var v82 = mosely_coords(v8, v2);
+		var v84 = mosely_coords(v8, v4);
+		var v85 = mosely_coords(v8, v5);
+		var v86 = mosely_coords(v8, v6);
+		var v87 = mosely_coords(v8, v7);
+		var v83 = mosely_coords(v8, v3);
 		
 		
 		//vert# 1    2    3    4    5    6    7    8
@@ -1257,16 +1257,13 @@ function mosely(v1, v2, v3, v4, v5, v6, v7, v8, n)
 	}
 }
 
-function interpolate( u, v, s )
-{		
+function mosely_coords( v1, v2)
+{
 	var result = [];
-	// result.push( (1.0 - s) * u[0] + s * v[0]);
-	// result.push( (1.0 - s) * u[1] + s * v[1]);
-	// result.push( (1.0 - s) * u[2] + s * v[2]);
-	for ( var i = 0; i < u.length; i++ )
-	{
-		result.push( (1.0 - s) * u[i] +  s * v[i] );
-	}
+
+	result.push( 0.66 * v1[0] + 0.33 * v2[0]);
+	result.push( 0.66 * v1[1] + 0.33 * v2[1]);
+	result.push( 0.66 * v1[2] + 0.33 * v2[2]);
 
 	return result;
 }
