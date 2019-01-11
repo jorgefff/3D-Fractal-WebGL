@@ -1,5 +1,5 @@
 # 3D-Fractal-WebGL
 
-An simple interface to control fractals by WebGL.
+A simple interface to control 3D fractals with WebGL.
 
-This work was done to Computer Vision pratical classes at Aveiro's University
+This work was done for Visual Computing pratical classes at Aveiro's University
